@@ -33,12 +33,6 @@ else
     xu=xr;
 end
  
-
-if f(xl)*f(xr)<0
-    xu=xr;
-else
-    xl=xr;
-end
  
 xnew(1)=0;
 xnew(i)=xr;
