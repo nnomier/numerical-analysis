@@ -1,25 +1,26 @@
 % Bisection Method in MATLAB
-function xr=bisection(a,xu,xl,tol,iter)
+function xr=bisection(func,xu,xl,tol,iter)
 
 % a=input('Enter function ','s');
-
-f=inline(a);
  
 % xl=input('Enter the first value of guess interval:') ;
 % xu=input('Enter the end value of guess interval:');
 % tol=input('Enter the allowed error:');
+% inline(f);
+f=str2func(['@(x)',char(func)]);
+% f=inline(char(func),'.x');
 if iter==-1
     max=100;
 else 
     max=iter;
 end
 
-if f(xu)*f(xl)<0
-else
+while f(xu)*f(xl)>0
     fprintf('The guess is incorrect! Enter new guesses\n');
-    xl=input('Enter the first value of guess interval:\n') ;
-    xu=input('Enter the end value of guess interval:\n');
+%     xl=input('Enter the first value of guess interval:\n') ;
+%     xu=input('Enter the end value of guess interval:\n');
 end
+
 fprintf( 'i \t\t\t\t xL \t\t\t\t xU \t\t\t\t xR \t\t\t\t f(xR) \n')
 
 for i=2:max

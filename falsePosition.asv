@@ -1,24 +1,33 @@
 function root = falsePosition(func, xl, xu, es, maxit)
 
 
+
+% x=-5:0.1:5;
+% plot(x,exp(x)-x.^3-cos(x));
+
+func=str2func(['@(x)',char(func)]);
+
+
 a(1)=xl;
 b(1)=xu;
-ya(1)=feval(func,a(1)); 
-yb(1)=feval(func,b(1));
-fprintf( 'i \t\t\t\t a \t\t\t\t b \t\t\t\t x \t\t\t\t f(x) \n')
+ya(1)=func(a(1)); 
+yb(1)=func(b(1));
+fprintf( 'i \t\t\t\t\t\t x1 \t\t\t\t\t f(x1) \t\t\t\t\t xu \t\t\t\t\t f(xu) \t\t\t\t\t xr \t\t\t\t\t f(xr) \t\t\t\t\t Ea\n')
 
-
+ea=0;
 if ya(1)* yb(1) > 0.0
     error('Function has same sign at end points');
 end
 
 for i=1:maxit
-    x(i) = b(i) -yb(i) *(b(i)-a(i)) / (yb(i)-ya(i));
-    y(i) = feval(func,x(i));
-    fprintf( '%d \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \n',i,a(i),b(i),x(i),y(i));
+    x(i) = b(i)-yb(i) *(b(i)-a(i)) / (yb(i)-ya(i));
+    y(i) = func(x(i));
 
     if y(i) == 0.0
-        disp('exact zero found'); break;
+        disp('found root');
+         printf('the root is %f',x(i));
+
+        break;
     elseif y(i) * ya(i) < 0
         a(i+1) = a(i) ; ya(i+1) = ya(i);
         b(i+1) = x(i) ; yb(i+1) = y(i);
@@ -26,10 +35,19 @@ for i=1:maxit
         a(i+1) = x(i) ; ya(i+1) = y(i);
         b(i+1) = b(i) ; yb(i+1) = yb(i);
     end;
-        if((i>1)  && (abs((x(i) - x(i-1)) <es))
-            disp('False position method has converged'); break
+        
+        if((i>1) )
+            ea= abs((x(i) - x(i-1))/x(i));
+            if(ea<es)
+%              fprintf( '%d \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f  \t\t\t\t %f  \t\t\t\t \n',i,a(i),ya(i),b(i),yb(i),x(i),y(i),ea);
+             fprintf('the root is %f',x(i));
+
+             break
+            end
         end
         iter = i;
+            fprintf( '%d \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f  \t\t\t\t %f  \t\t\t\t \n',i,a(i),ya(i),b(i),yb(i),x(i),y(i),ea);
+
 end
 if(iter >= maxit)
     disp('zero not found to desired tolerance');
