@@ -1,5 +1,6 @@
 function y = secant(f, x0, x1, epsilon, iteration)
 
+f = str2func(f);
 if( iteration == -1)
     iteration = 50;
 end
@@ -9,23 +10,25 @@ if( epsilon == -1)
 end
 
 for i=1:iteration
-    difference =double(f(x1) - f(x0) );
+    fx1 = f(x1);
+    fx0 = f(x0);
+    difference = fx1 - fx0;
     
      if(isinf( difference )||isnan(difference) || difference == 0)
-          y= x1;
+          y = x1;
           return;
      end
       
-    xnew = x1-( f(x1)*(x1-x0)/difference );
+    xnew = x1-( fx1 *(x1-x0)/difference );
     
-    error = abs( xnew - x1);
+    error = abs( xnew - x1)/xnew ;
     if( error < epsilon)
             y = xnew;
             break;
     end
     
-    x1 = xnew;
     x0 = x1;
+    x1 = xnew;
 end
 
 y = xnew;

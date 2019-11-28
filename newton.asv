@@ -1,7 +1,8 @@
 %The Newton Raphson Method
-function z = newton(f,  x0, epsilon, iteration)
+function z = newton(str,  x0, epsilon, iteration)
 
 syms x;
+f = str2func(str);
  %The Derivative of the Function
 
 g  = matlabFunction( diff(f(x)) );
@@ -15,8 +16,8 @@ end
 
 for i=1:iteration
      %Calculating the value of function at x0
-    f0 = vpa(subs( f,x,x0) );
-    f0_der = vpa( subs(g,x,x0)); %Calculating the value of function derivative at x0
+    f0 = subs( f,x,x0);
+    f0_der =  subs(g,x,x0); %Calculating the value of function derivative at x0
     y=x0-f0/f0_der; % The Formula
     err =abs(y-x0)/y;
     if err<epsilon %checking the amount of error at each iteration
