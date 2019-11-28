@@ -259,10 +259,11 @@ end
 switch get(handles.methodMenu,'Value')
     
     case 1
-        bisection(func,xu,xl,tol,iter);
+       [iterations,xr]= bisection(func,xu,xl,tol,iter);
+       printBracketing(iterations,xr,handles);
     case 2
        [iterations,root]= falsePosition(func,xu,xl,tol,iter); 
-       printFalsi(iterations,root,handles);
+       printBracketing(iterations,root,handles);
     case 3
        [iterations,xc,err] = fixedPoint( func, xl, tol, iter);
         printFixed(iterations,xc,handles);
@@ -296,7 +297,7 @@ else
 end
 
 
-function printFalsi(iterations,xc,handles)
+function printBracketing(iterations,xc,handles)
 f = figure;
 
 t = uitable('ColumnName', {'i','xl', 'f(xl)', 'xu', 'f(xu)','xr','f(xr)','ea','time'});
@@ -304,18 +305,6 @@ drawnow;
 
 set(t,'Position',[20 20 500 300]);
 set(t, 'Data', iterations);
-
-
-% 
-% 
-% txt = [];
-%   for i = 1:size(iterations)
-%            txt= [txt sprintf('i=%d \t\t xl=%f \t\t f(xl)=%f \t\t xu=%f \t\t\ f(xu)%f \t\t xr=%f \t\t f(xr)=%f  \t\t ea=%f \t\t time=%f \r\n',iterations(i,:))];
-%        end
-% %        root=sprintf('root is : %12f',xc);
-% %        txt=[txt root];
-%        set(handles.result, 'String',txt);
-
        
 function printFixed(iterations,xc,handles)
 f = figure;
@@ -325,6 +314,8 @@ drawnow;
 
 set(t,'Position',[20 20 500 300]);
 set(t, 'Data', iterations);
+
+
 
 
 

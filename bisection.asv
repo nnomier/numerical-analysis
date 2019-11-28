@@ -1,5 +1,5 @@
 % Bisection Method in MATLAB
-function [iterations,xr]=bisection(func,xu,xl,tol,max)
+function iterations,xr=bisection(func,xu,xl,tol,max)
 
 f=str2func(['@(x)',char(func)]);
 tic;
