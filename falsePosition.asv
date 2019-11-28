@@ -1,5 +1,7 @@
 function root = falsePosition(func, xl, xu, es, maxit)
 
+
+
 % x=-5:0.1:5;
 % plot(x,exp(x)-x.^3-cos(x));
 
@@ -20,10 +22,9 @@ end
 for i=1:maxit
     x(i) = b(i)-yb(i) *(b(i)-a(i)) / (yb(i)-ya(i));
     y(i) = func(x(i));
-    
-     if((i>1) )
+    if((i>1) )
             ea= abs((x(i) - x(i-1))/x(i));
-     end
+    end
     if y(i) == 0.0
         disp('found root');
         fprintf('the root is %f',x(i));
@@ -36,13 +37,14 @@ for i=1:maxit
         b(i+1) = b(i) ; yb(i+1) = yb(i);
     end;
         
-       
+        if((i>1)  )
             if(ea<es)
 %            fprintf( '%d \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f  \t\t\t\t %f  \t\t\t\t \n',i,a(i),ya(i),b(i),yb(i),x(i),y(i),ea);
              fprintf('the root is %f',x(i));
 
              break
-            end
+            
+        end
         iter = i;
             fprintf( '%d \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f  \t\t\t\t %f  \t\t\t\t \n',i,a(i),ya(i),b(i),yb(i),x(i),y(i),ea);
 

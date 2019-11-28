@@ -1,5 +1,7 @@
 function [iterations,root] = falsePosition(func, xl, xu, es, maxit)
 
+
+
 % x=-5:0.1:5;
 % plot(x,exp(x)-x.^3-cos(x));
 
@@ -13,21 +15,19 @@ yb(1)=func(b(1));
 fprintf( 'i \t\t\t\t\t\t x1 \t\t\t\t\t f(x1) \t\t\t\t\t xu \t\t\t\t\t f(xu) \t\t\t\t\t xr \t\t\t\t\t f(xr) \t\t\t\t\t Ea\n')
 
 ea=0;
-if ya(1)* yb(1) > 0.0
-    display('Function has same sign at end points');
-end
+tic;
 iterations=[];
- tic;
+if ya(1)* yb(1) > 0.0
+    diplay('Function has same sign at end points');
+end
 
 for i=1:maxit
     x(i) = b(i)-yb(i) *(b(i)-a(i)) / (yb(i)-ya(i));
     y(i) = func(x(i));
-    
-     if((i>1) )
+    if((i>1) )
             ea= abs((x(i) - x(i-1))/x(i));
-     end
-     
-       iterations=[iterations;[i a(i) ya(i) b(i) yb(i) x(i) y(i) ea toc]];
+    end
+           iterations=[iterations;[a(i) ya(i) b(i) yb(i) x(i) y(i) ea toc]];
 
     if y(i) == 0.0
         disp('found root');
@@ -41,13 +41,14 @@ for i=1:maxit
         b(i+1) = b(i) ; yb(i+1) = yb(i);
     end;
         
-            if(ea<es)
+        if((i>1) &&ea<es )
 %            fprintf( '%d \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f  \t\t\t\t %f  \t\t\t\t \n',i,a(i),ya(i),b(i),yb(i),x(i),y(i),ea);
              fprintf('the root is %f',x(i));
+
              break
-            end
-        iter = i;
-            fprintf( '%d \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f  \t\t\t\t %f  \t\t\t\t \n',i,a(i),ya(i),b(i),yb(i),x(i),y(i),ea);
+            
+        end
+            fprintf( '%d \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f  \t\t\t\t %f  \t\t\t\t  %f  \t\t\t\t \n',i,a(i),ya(i),b(i),yb(i),x(i),y(i),ea,toc);
 
 end
 if(i >= maxit)
