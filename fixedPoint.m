@@ -1,20 +1,15 @@
-gufunction [xc,err]=fixedPoint(g,x0,TOL,iter)
-
+function [iterations,xc,err]=fixedPoint(g,x0,TOL,max)         
 f=str2func(['@(x)',char(g)]);
 x1=f(x0);
-
-if iter==-1
-    max=20;
-else 
-    max=iter;
-end
+err=0;
 
 if(isnan(x1) || isinf(x1))
         err = 1;
         display('nan or inf');
         return;
 end
-    
+      iterations=[];
+    tic;
 t=0;
 
 ea= abs((x1-x0)/x1);
@@ -29,9 +24,12 @@ while(ea>TOL&&t<max)
             return;
         end
     t=t+1;
-    display ([x0 x1]);
+  iterations=[iterations;[t x0 x1 ea toc]];
 end
-
+for i = 1:size(iterations)
+            fprintf('%6f %12f %12f %12f %12f\r\n',iterations(i,:));
+end
+         
     % Testing the last value and compare it with the g(x), if the difference
     % between them is less than eps then this answer is acceptable.
     test = f(x1)-x1;

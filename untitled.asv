@@ -267,8 +267,7 @@ switch get(handles.methodMenu,'Value')
        for i = 1:size(iterations)
            txt= [txt sprintf('%6f %12f %12f %12f %12f\r\n',iterations(i,:))];
        end
-       root=sprintf('root is : %12f',xc);
-       txt=[txt root];
+       txt=[txt '
        set(handles.result, 'String',txt);
     case 4
         newton( func, xl, tol, iter);
