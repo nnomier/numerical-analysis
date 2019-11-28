@@ -1,5 +1,5 @@
 %The Newton Raphson Method
-function y= newton(  f, x0, epsilon, iteration)
+function z = newton(f,  x0, epsilon, iteration)
 
 syms x;
  %The Derivative of the Function
@@ -15,17 +15,19 @@ end
 
 for i=1:iteration
      %Calculating the value of function at x0
-    f0 = subs( f,x,x0);
-    f0_der =  subs(g,x,x0); %Calculating the value of function derivative at x0
+    f0 = vpa(subs( f,x,x0) );
+    f0_der = vpa( subs(g,x,x0)); %Calculating the value of function derivative at x0
     y=x0-f0/f0_der; % The Formula
-    err=abs(y-x0);
+    err =abs(y-x0)/y;
     if err<epsilon %checking the amount of error at each iteration
+        z = y;
         break
     end
     x0=y;
+    z=y;
 end
 
 fprintf('The Root is : %f \n');
-y
+z
 fprintf('No. of Iterations : %d\n',i);
 end
