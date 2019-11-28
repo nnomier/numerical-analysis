@@ -145,6 +145,26 @@ end
 % --- Executes on selection change in methodMenu.
 function methodMenu_Callback(hObject, eventdata, handles)
 
+popChoice = get(handles.methodMenu ,'Value');
+switch popChoice
+    case 1
+        set(handles.xLower ,'Visible','On')
+        set(handles.xUpper ,'Visible','On')
+
+    case 2
+         set(handles.xLower ,'Visible','On')
+         set(handles.xUpper ,'Visible','On')
+    case 3
+         set(handles.xLower ,'Visible','On')
+         set(handles.xUpper ,'Visible','Off')
+    case 4
+          set(handles.xLower ,'Visible','On')
+          set(handles.xUpper ,'Visible','Off')
+    case 5
+          set(handles.xLower ,'Visible','On')
+          set(handles.xUpper ,'Visible','On')
+end
+
 % hObject    handle to methodMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -219,7 +239,7 @@ function bisection_Callback(hObject, eventdata, handles)
 
 % --- Executes on button press in pushbutton1.
 function pushbutton1_Callback(hObject, eventdata, handles)
-func = get(handles.functionText,'String');
+func =  get(handles.functionText,'String');
 xu=str2double(get(handles.xUpper,'String'));
 xl=str2double(get(handles.xLower,'String'));
 tol=str2double(get(handles.tolerance,'String'));
@@ -230,9 +250,11 @@ switch get(handles.methodMenu,'Value')
     case 2
         falsePosition(func,xu,xl,tol,iter);   
     case 3
+        fixedPoint( func, xl, tol, iter);
     case 4
+        newton( func, xl, tol, iter);
     case 5
-        display('ow');
+        secant(func, xl, xu, tol, iter);
 end
 
 
