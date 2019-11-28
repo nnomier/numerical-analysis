@@ -27,7 +27,7 @@ for i=1:maxit
     if((i>1) )
             ea= abs((x(i) - x(i-1))/x(i));
     end
-           iterations=[iterations;[a(i) ya(i) b(i) yb(i) x(i) y(i) ea toc]];
+           iterations=[iterations;[i a(i) ya(i) b(i) yb(i) x(i) y(i) ea toc]];
 
     if y(i) == 0.0
         disp('found root');

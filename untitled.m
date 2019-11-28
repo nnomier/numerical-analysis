@@ -239,6 +239,7 @@ function bisection_Callback(hObject, eventdata, handles)
 
 % --- Executes on button press in pushbutton1.
 function pushbutton1_Callback(hObject, eventdata, handles)
+
 func =  get(handles.functionText,'String');
 xu=str2double(get(handles.xUpper,'String'));
 xl=str2double(get(handles.xLower,'String'));
@@ -264,7 +265,7 @@ switch get(handles.methodMenu,'Value')
        printFalsi(iterations,root,handles);
     case 3
        [iterations,xc,err] = fixedPoint( func, xl, tol, iter);
-        printFixed(iterations,xc,err,handles);
+        printFixed(iterations,xc,handles);
     case 4
         newton( func, xl, tol, iter);
     case 5
@@ -296,24 +297,35 @@ end
 
 
 function printFalsi(iterations,xc,handles)
-txt = [];
-  for i = 1:size(iterations)
-           txt= [txt sprintf('i=%d \t\t xl=%f \t\t f(xl)=%f \t\t xu=%f \t\t\ f(xu)%f \t\t xr=%f \t\t f(xr)=%f  \t\t ea=%f \t\t time=%f \r\n\n',iterations(i,:))];
-       end
-%        root=sprintf('root is : %12f',xc);
-%        txt=[txt root];
-       set(handles.result, 'String',txt);
+f = figure;
+
+t = uitable('ColumnName', {'i','xl', 'f(xl)', 'xu', 'f(xu)','xr','f(xr)','ea','time'});
+drawnow;
+
+set(t,'Position',[20 20 500 300]);
+set(t, 'Data', iterations);
+
+
+% 
+% 
+% txt = [];
+%   for i = 1:size(iterations)
+%            txt= [txt sprintf('i=%d \t\t xl=%f \t\t f(xl)=%f \t\t xu=%f \t\t\ f(xu)%f \t\t xr=%f \t\t f(xr)=%f  \t\t ea=%f \t\t time=%f \r\n',iterations(i,:))];
+%        end
+% %        root=sprintf('root is : %12f',xc);
+% %        txt=[txt root];
+%        set(handles.result, 'String',txt);
 
        
 function printFixed(iterations,xc,handles)
-txt = [];
+f = figure;
 
-  for i = 1:size(iterations)
-           txt= [txt sprintf('i=%d \t x0=%12f \t x1=%12f \t ea=%12f \t time=%12f\r\n',iterations(i,:))];
-       end
-       root=sprintf('root is : %12f',xc);
-       txt=[txt root];
-       set(handles.result, 'String',txt);
+t = uitable('ColumnName', {'i','x0', 'x1', 'ea', 'time'});
+drawnow;
+
+set(t,'Position',[20 20 500 300]);
+set(t, 'Data', iterations);
+
 
 
 
