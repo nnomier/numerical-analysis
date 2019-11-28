@@ -15,8 +15,9 @@ else
     max=iter;
 end
 
-while f(xu)*f(xl)>0
+if f(xu)*f(xl)>0
     fprintf('The guess is incorrect! Enter new guesses\n');
+    return;
 %     xl=input('Enter the first value of guess interval:\n') ;
 %     xu=input('Enter the end value of guess interval:\n');
 end

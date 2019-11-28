@@ -37,7 +37,6 @@ fprintf('The Root is : %f \n');
 
 fprintf('The Number of iterations : %f \n');
 
-
 y
 fprintf('The Number of iterations : %f \n');
 i

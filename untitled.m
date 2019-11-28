@@ -22,7 +22,7 @@ function varargout = untitled(varargin)
 
 % Edit the above text to modify the response to help untitled
 
-% Last Modified by GUIDE v2.5 27-Nov-2019 15:40:35
+% Last Modified by GUIDE v2.5 28-Nov-2019 13:20:50
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -256,6 +256,37 @@ switch get(handles.methodMenu,'Value')
     case 5
         secant(func, xl, xu, tol, iter);
 end
+set(handles.functionText ,'enable','On')
+
+
+
+
+
+
+% --- Executes on button press in file.
+function file_Callback(hObject, eventdata, handles)
+[file,path] = uigetfile('*.txt');
+
+if isequal(file,0)
+   disp('User selected Cancel');
+else
+    disp(['User selected ', fullfile(path,file)]);
+    fid = fopen(fullfile(path,file));
+    data = textscan(fid,'%s');
+    fclose(fid);
+    celldisp(data);
+    f=data{1}{1};
+    display(f);  
+    set(handles.functionText,'string',f);
+    set(handles.functionText ,'enable','Off')
+ 
+end
+
+
+
+
+
+
 
 
 
