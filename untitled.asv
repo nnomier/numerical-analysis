@@ -254,30 +254,22 @@ if(isempty(tol))
 else
     tol=str2double(tol);
 end
-txt = [];
 
 switch get(handles.methodMenu,'Value')
     
     case 1
         bisection(func,xu,xl,tol,iter);
     case 2
-        falsePosition(func,xu,xl,tol,iter);   
+       [iterations,root]= falsePosition(func,xu,xl,tol,iter);   
     case 3
        [iterations,xc,err] = fixedPoint( func, xl, tol, iter);
-       for i = 1:size(iterations)
-           txt= [txt sprintf('%6f %12f %12f %12f %12f\r\n',iterations(i,:))];
-       end
-       txt=[txt '
-       set(handles.result, 'String',txt);
+        printFixed(iterations,xc,err,handles);
     case 4
         newton( func, xl, tol, iter);
     case 5
         secant(func, xl, xu, tol, iter);
 end
 set(handles.functionText ,'enable','On');
-
-
-
 
 
 
@@ -302,6 +294,26 @@ else
 end
 
 
+function printFalsi(iterations,xc,err,handles)
+txt = [];
+
+  for i = 1:size(iterations)
+           txt= [txt sprintf('%d \t\t %f \t\t %f \t\t %f \t\t\ %f \t\t %f \t\t\t\t %f  \t\t\t\t %f  \t\t\t\t \n',iterations(i,:))];
+       end
+       root=sprintf('root is : %12f',xc);
+       txt=[txt root];
+       set(handles.result, 'String',txt);
+
+       
+function printFixed(iterations,xc,err,handles)
+txt = [];
+
+  for i = 1:size(iterations)
+           txt= [txt sprintf('i=%d \t x0=%12f \t x1=%12f \t ea=%12f \t time=%12f\r\n',iterations(i,:))];
+       end
+       root=sprintf('root is : %12f',xc);
+       txt=[txt root];
+       set(handles.result, 'String',txt);
 
 
 
