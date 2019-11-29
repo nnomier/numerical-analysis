@@ -1,43 +1,60 @@
-function y = secant(func, x0, x1, epsilon, iteration)
+function iterations = secant(func, x0, x1, epsilon, iteration)
 
 f = str2func(['@(x)',char(func)]);
-if( iteration == -1)
-    iteration = 50;
-end
 
-if( epsilon == -1)
-    epsilon = 0.00001;
+tic;
+iterations=[];
+
+error = 1;
+
+fx1 = f(x1);
+fx0 = f(x0);
+
+
+difference = fx1-fx0;
+
+if( difference == 0)
+    return;
 end
+    
+a(1) = x1;
+b(1) = x0;
+c(1)= x1-( fx1 *(x1-x0)/difference );
+i = 0;
+a(1)
+iterations=[iterations;[i b(1) a(1) c(1) error toc]];
+
+b(2) = a(1);
+a(2) = c(1);
 
 for i=1:iteration
-    fx1 = f(x1);
-    fx0 = f(x0);
+    fx1 = f(a(i+1));
+    fx0 = f(b(i+1));
     difference = fx1 - fx0;
     
-     if(isinf( difference )||isnan(difference) || difference == 0)
-          y = x1;
+     if( isnan(difference) || difference == 0)
+          error=1;
           return;
      end
       
-    xnew = x1-( fx1 *(x1-x0)/difference );
+    c(i+1) = a(i+1)-( fx1 *(a(i+1)-b(i+1))/difference );
     
-    error = abs( xnew - x1)/xnew ;
-    if( error < epsilon || f(xnew) == 0)
-            y = xnew;
+    error = abs( c(i+1) - a(i+1))/abs(c(i+1)) ;
+    
+    iterations=[iterations; [ i b(i+1) a(i+1) c(i+1) error toc] ];
+    if( error < epsilon || f(c(i+1)) == 0)
             break;
     end
     
-    x0 = x1;
-    x1 = xnew;
+    b(i+2) = a(i+1);
+    a(i+2) = c(i+1);
 end
 
-y = xnew;
+display( iterations(:,:))
 fprintf('The Root is : %f \n');
 
+c(i)
 
-fprintf('The Number of iterations : %f \n');
-
-y
 fprintf('The Number of iterations : %f \n');
 i
 

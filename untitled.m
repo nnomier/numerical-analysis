@@ -268,9 +268,11 @@ switch get(handles.methodMenu,'Value')
        [iterations,xc,err] = fixedPoint( func, xl, tol, iter);
         printFixed(iterations,xc,handles);
     case 4
-        newton( func, xl, tol, iter);
+      [iterations] = newton( func, xl, tol, iter);
+      printNewton( iterations, handles );
     case 5
-        secant(func, xl, xu, tol, iter);
+       [iterations]  = secant(func, xl, xu, tol, iter);
+       printSecant( iterations, handles);
 end
 set(handles.functionText ,'enable','On');
 
@@ -303,7 +305,7 @@ f = figure;
 t = uitable('ColumnName', {'i','xl', 'f(xl)', 'xu', 'f(xu)','xr','f(xr)','ea','time'});
 drawnow;
 
-set(t,'Position',[20 20 500 300]);
+set(t,'Position',[20 20 1000 500]);
 set(t, 'Data', iterations);
        
 function printFixed(iterations,xc,handles)
@@ -315,12 +317,22 @@ drawnow;
 set(t,'Position',[20 20 500 300]);
 set(t, 'Data', iterations);
 
+function printNewton( iterations, handles )
+
+fig = figure;
+t = uitable(fig, 'ColumnName', {'i','x', 'f(x)', 'derivative f(x)','ea','time'});
+drawnow;
+
+set(t,'Position',[20 20 500 300]);
+set(t, 'Data', iterations);
 
 
+function printSecant( iterations, handles )
 
+fig = figure;
+t = uitable(fig, 'ColumnName', {'i','x lower', 'x upper', 'x current','ea','time'});
+drawnow;
 
-
-
-
-
+set(t,'Position',[20 20 500 300]);
+set(t, 'Data', iterations);
 
