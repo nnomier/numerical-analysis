@@ -1,12 +1,14 @@
 % Bisection Method in MATLAB
-function [iterations,xr]=bisection(func,xu,xl,tol,max)
+function [iterations,xr,err]=bisection(func,xu,xl,tol,max)
 
 f=str2func(['@(x)',char(func)]);
+xr=0;
 tic;
 iterations=[];
-
+err=0;
 if f(xu)*f(xl)>0
-    fprintf('The guess is incorrect! Enter new guesses\n');
+    err=2;
+    f = msgbox('Function has same sign at end points! Enter new guesses');
     return;
 %     xl=input('Enter the first value of guess interval:\n') ;
 %     xu=input('Enter the end value of guess interval:\n');
@@ -27,9 +29,16 @@ end
 xnew(1)=0;
 xnew(i)=xr;
 ea=abs((xnew(i)-xnew(i-1))/xnew(i));
-iterations=[iterations;[i xl f(xl) xu f(xu) xr f(xr) ea toc]];
+iterations=[iterations;[i-1 xl f(xl) xu f(xu) xr f(xr) ea toc]];
 
 if ea<tol,break,end
 end
-str = ['The required root of the equation is: ', num2str(xr), '']
+
+if(i >= max )
+    err=1;
+    f = msgbox('zero not found to desired tolerance');
+else
+    fprintf('here the root is : %f',xr);
+end
+
 end

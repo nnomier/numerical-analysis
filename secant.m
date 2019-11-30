@@ -1,12 +1,12 @@
-function iterations = secant(func, x0, x1, epsilon, iteration)
+function [iterations,flag,root] = secant(func, x0, x1, epsilon, iteration)
 
 f = str2func(['@(x)',char(func)]);
-
+root=0; %default value so that it would'nt outputs an error if xc is not found
 tic;
 iterations=[];
 
-error = 1;
-
+flag = 0;
+error=1;
 fx1 = f(x1);
 fx0 = f(x0);
 
@@ -33,7 +33,8 @@ for i=1:iteration
     difference = fx1 - fx0;
     
      if( isnan(difference) || difference == 0)
-          error=1;
+          flag=1;
+          msgbox('error division by zero found');
           return;
      end
       
@@ -49,11 +50,15 @@ for i=1:iteration
     b(i+2) = a(i+1);
     a(i+2) = c(i+1);
 end
-
+if(i>=iteration) 
+     flag=1;
+     msgbox('zero not found at desired tolerance');
+end
+ 
 display( iterations(:,:))
 fprintf('The Root is : %f \n');
-
 c(i)
+root=c(i);
 
 fprintf('The Number of iterations : %f \n');
 i

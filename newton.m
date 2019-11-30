@@ -1,14 +1,15 @@
 %The Newton Raphson Method
-function iterations = newton(func,  x0, epsilon, iteration)
+function [iterations,flag,root] = newton(func,  x0, epsilon, iteration)
 
 syms x;
  %The Derivative of the Function
 f = str2func(['@(x)',char(func)]);
 tic;
+root=0; %default value so that it would'nt outputs an error if xc is not found
 iterations=[];
 g  = matlabFunction( diff(f(x)) );
 
-
+flag=0;
 err=1;  %set initial error to 1
 
  a(1) = x0;
@@ -41,10 +42,14 @@ for i=1:iteration
     end
     
 end
-
+ if(i>=iteration) 
+     flag=1;
+     msgbox('zero not found at desired tolerance');
+ end
  display( iterations( :,: ) )
 
 fprintf('The Root is : %f \n');
 double(a(i))
+root=double(a(i));
 fprintf('No. of Iterations : %d\n',i);
 end

@@ -1,4 +1,4 @@
-function [iterations,root] = falsePosition(func, xl, xu, es, maxit)
+function [iterations,root,err] = falsePosition(func, xl, xu, es, maxit)
 
 
 
@@ -6,7 +6,8 @@ function [iterations,root] = falsePosition(func, xl, xu, es, maxit)
 % plot(x,exp(x)-x.^3-cos(x));
 
 func=str2func(['@(x)',char(func)]);
-
+root=0;
+err=0;
 
 a(1)=xl;
 b(1)=xu;
@@ -18,7 +19,9 @@ ea=0;
 tic;
 iterations=[];
 if ya(1)* yb(1) > 0.0
-    diplay('Function has same sign at end points');
+        err=2;
+        f = msgbox('Function has same sign at end points! Enter new guesses');
+        return;
 end
 
 for i=1:maxit
@@ -51,8 +54,10 @@ for i=1:maxit
             fprintf( '%d \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f \t\t\t\t %f  \t\t\t\t %f  \t\t\t\t  %f  \t\t\t\t \n',i,a(i),ya(i),b(i),yb(i),x(i),y(i),ea,toc);
 
 end
-if(i >= maxit)
-    disp('zero not found to desired tolerance');
+if(i >= maxit )
+    err=1;
+    f = msgbox('zero not found to desired tolerance');
+    return;
 else
     root=x(i);
     fprintf('here the root is : %f',root);

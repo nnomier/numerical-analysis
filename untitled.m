@@ -240,6 +240,8 @@ function bisection_Callback(hObject, eventdata, handles)
 % --- Executes on button press in pushbutton1.
 function pushbutton1_Callback(hObject, eventdata, handles)
 
+set(handles.outputtext,'String','');
+
 func =  get(handles.functionText,'String');
 xu=str2double(get(handles.xUpper,'String'));
 xl=str2double(get(handles.xLower,'String'));
@@ -255,24 +257,52 @@ if(isempty(tol))
 else
     tol=str2double(tol);
 end
-
+% root=sprintf('root is : %12f',xc);
+%        txt=[txt root];	%        txt=[txt root];
+%        set(handles.result, 'String',txt);	       set(handles.result, 'String',txt);
 switch get(handles.methodMenu,'Value')
     
     case 1
-       [iterations,xr]= bisection(func,xu,xl,tol,iter);
-       printBracketing(iterations,xr,handles);
+       [iterations,xr,err]= bisection(func,xu,xl,tol,iter);
+       display(err);
+       if(err~=2)
+       printBracketing(iterations);
+       end
+       if(err==0)
+       display('hello');
+       txt=sprintf('root is : %12f',xr);
+       set(handles.outputtext,'String',txt);
+       end
     case 2
-       [iterations,root]= falsePosition(func,xu,xl,tol,iter); 
-       printBracketing(iterations,root,handles);
+       [iterations,root,err]= falsePosition(func,xu,xl,tol,iter); 
+        if(err~=2)
+       printBracketing(iterations);
+       end
+       if(err==0)
+       txt=sprintf('root is : %12f',root);
+       set(handles.outputtext,'String',txt);
+       end
     case 3
        [iterations,xc,err] = fixedPoint( func, xl, tol, iter);
-        printFixed(iterations,xc,handles);
+        printFixed(iterations);
+        if(err~=1)
+        txt=sprintf('root is : %12f',xc);
+       set(handles.outputtext,'String',txt);
+       end
     case 4
-      [iterations] = newton( func, xl, tol, iter);
-      printNewton( iterations, handles );
+      [iterations,flag,root] = newton( func, xl, tol, iter);
+      printNewton( iterations );
+      if(flag~=1)
+        txt=sprintf('root is : %12f',root);
+       set(handles.outputtext,'String',txt);
+       end
     case 5
-       [iterations]  = secant(func, xl, xu, tol, iter);
-       printSecant( iterations, handles);
+       [iterations,flag,root]  = secant(func, xl, xu, tol, iter);
+       printSecant( iterations);
+        if(flag~=1)
+        txt=sprintf('root is : %12f',root);
+       set(handles.outputtext,'String',txt);
+       end
 end
 set(handles.functionText ,'enable','On');
 
@@ -299,8 +329,9 @@ else
 end
 
 
-function printBracketing(iterations,xc,handles)
-f = figure;
+function printBracketing(iterations)
+f = figure;  
+set(f, 'units','normalized','outerposition',[0 0 1 1]);
 
 t = uitable('ColumnName', {'i','xl', 'f(xl)', 'xu', 'f(xu)','xr','f(xr)','ea','time'});
 drawnow;
@@ -308,7 +339,7 @@ drawnow;
 set(t,'Position',[20 20 1000 500]);
 set(t, 'Data', iterations);
        
-function printFixed(iterations,xc,handles)
+function printFixed(iterations)
 f = figure;
 
 t = uitable('ColumnName', {'i','x0', 'x1', 'ea', 'time'});
@@ -317,22 +348,21 @@ drawnow;
 set(t,'Position',[20 20 500 300]);
 set(t, 'Data', iterations);
 
-function printNewton( iterations, handles )
-
+function printNewton( iterations )
 fig = figure;
+
 t = uitable(fig, 'ColumnName', {'i','x', 'f(x)', 'derivative f(x)','ea','time'});
 drawnow;
-
 set(t,'Position',[20 20 500 300]);
 set(t, 'Data', iterations);
 
 
-function printSecant( iterations, handles )
+function printSecant( iterations )
 
-fig = figure;
+fig=figure;
+
 t = uitable(fig, 'ColumnName', {'i','x lower', 'x upper', 'x current','ea','time'});
 drawnow;
 
 set(t,'Position',[20 20 500 300]);
 set(t, 'Data', iterations);
-
